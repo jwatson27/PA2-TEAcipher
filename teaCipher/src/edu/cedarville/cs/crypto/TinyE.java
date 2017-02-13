@@ -24,6 +24,7 @@ public class TinyE {
                 right = plaintext[j+1];                                                                
                 
                 if (mode == Mode.ECB) {
+                    // Electronic Codebook mode
                     for (int i = 0; i < 32; i++) {
                         sum = sum + delta;
                         left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
@@ -32,7 +33,15 @@ public class TinyE {
                     
                     ciphertext[j]   = left;
                     ciphertext[j+1] = right;
-                }                       
+                }        
+                else if (mode == Mode.CBC) {
+                    // Cipher Block Chaining mode
+                    
+                }
+                else {
+                    // CTR mode
+                    
+                }
             }                       
                         
             return null;                
