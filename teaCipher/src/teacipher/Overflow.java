@@ -1,3 +1,7 @@
+package teacipher;
+
+import java.lang.Integer;
+
 class Overflow {
   
   public static void main(String[] args) {
@@ -23,6 +27,28 @@ class Overflow {
     for (int i=0; i<20; i++) {
       print(small_int + i, "2nd loop +" + i);
     }
+    
+    // ******* extra testing   ******  JDW
+    Integer i = 200000000;
+    print(i, "200000000");    
+    byte b = i.byteValue();
+    
+    System.out.print("byte value: ");
+    System.out.println(b);
+    
+    
+    i = 345;
+    print(i, "345");    
+    b = i.byteValue();
+    
+    System.out.print("byte value: ");
+    System.out.println(b);
+    
+    //byte[] bArray = Integer.BYTES;    
+    // ******* extra testing   ******  JDW
+    
+    
+    
   }
   
   private static void print(int i, String desc) {

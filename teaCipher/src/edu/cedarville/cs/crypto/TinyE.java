@@ -45,7 +45,7 @@ public class TinyE {
                 }
             }                       
                         
-            return null;                
+            return ciphertext;                
 	}
 
 	public Integer[] decrypt(Integer[] ciphertext, Integer[] key, Mode mode, Integer[] iv) {
