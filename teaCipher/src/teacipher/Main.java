@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-//hello
-
-
 import edu.cedarville.cs.crypto.TinyE;
 import edu.cedarville.cs.crypto.Tools;
 
