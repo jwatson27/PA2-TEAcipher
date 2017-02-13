@@ -8,6 +8,8 @@ public class Tools {
         //Josiah study CTR mode
         //Ben study CBC mode
     
+        // FIXME: note to self: don't forget about upper and lower case
+    
 	public static Integer[] convertFromBytesToInts(byte[] bs) {           
             // FIXME: Maybe I'm thinking about this wrong, but I'm making a note so
             // we'll remember to talk about it. Suppose the array of bytes (bs) that
@@ -58,6 +60,14 @@ public class Tools {
                 s += " ";
             }
             
+            // FIXME: question about padding. Should the hex String
+            // "123456789ABC"
+            // have padding added like this:
+            // "123456789ABC    "
+            // or like this:
+            // "12345678    9ABC"
+            // ?? I ask because that would change the resulting Integer, wouldn't it?
+            
             // Declare our array of Integers to be the proper size
             // (note that every 8 hex characters make one Integer)
             Integer[] ints = new Integer[ s.length() / 8 ];
@@ -91,10 +101,28 @@ public class Tools {
 	}
 	
 	public static String convertFromIntsToHexString(Integer[] ints) {
+            // The String we will build from Integers and eventually return at
+            // the end of the method.
             String hexString = "";
-            for (int i = 0; i < ints.length; i++) {
-                hexString += Integer.toHexString(ints[i]);
+            // Each Integer gets converted into a String and first stored here.
+            String tempStr;
+            
+            // Iterate through the entire array of Integers that 
+            // was passed to us.
+            for(int i = 0; i < ints.length; i++) {
+                // Turn this Integer into a String of hex characters.
+                tempStr = Integer.toHexString( ints[i] );
+                // Since the hex String in tempStr does not have any leading
+                // zeroes, we may have to add some in order to ensure that
+                // each Integer gets represented as 8 hex characters.
+                for (int j = 0; j < 8 - tempStr.length(); j++) {
+                    hexString += "0";
+                }
+                // Append to hexString.
+                hexString += tempStr;
             }
+            
+            //Return the String of hex characters we produced.
             return hexString;
 	}
 	
