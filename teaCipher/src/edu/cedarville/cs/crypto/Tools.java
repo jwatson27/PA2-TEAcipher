@@ -8,7 +8,19 @@ public class Tools {
         //Josiah study CTR mode
         //Ben study CBC mode
     
-	public static Integer[] convertFromBytesToInts(byte[] bs) {                                   
+	public static Integer[] convertFromBytesToInts(byte[] bs) {           
+            // FIXME: Maybe I'm thinking about this wrong, but I'm making a note so
+            // we'll remember to talk about it. Suppose the array of bytes (bs) that
+            // is given as an argument is 11 bytes long. Then
+            // bs.length % 8
+            // will equal 3. The new padded array is then initialized to a length
+            // of 14 bytes, or 112 bits. That doesn't provide us with 64-bit blocks.
+            // Maybe this line should be:
+            // int padNum = 8 - (bs.length % 8)
+            //
+            // In which case, given the example I wrote above, we would end up
+            // with a new padded array of length 16 bytes, or 128 bits.
+            //
             int padNum = bs.length % 8; //number of padding bytes for 64-bit blocks                                               
             byte[] paddedBS = new byte[bs.length + padNum]; //create new byte array
             
@@ -37,13 +49,29 @@ public class Tools {
 	}
 	
 	public static Integer[] convertFromHexStringToInts(String s) {
-            //read in 8 hex char
-                //if less than 8 add padding
-            //run through for loop to convert each char to binary
-            //concatenate together
-            //add resulting integer to array
             
-            return null;
+            // add padding to ensure that the length of the hex String is a
+            // multiple of 8. (because each "chunk" of 8 characters will become
+            // an Integer)
+            int padNum = 8 - (s.length() % 8);
+            for (int i = 0; i < padNum; i++) {
+                s += " ";
+            }
+            
+            // Declare our array of Integers to be the proper size
+            // (note that every 8 hex characters make one Integer)
+            Integer[] ints = new Integer[ s.length() / 8 ];
+            
+            // Take 8-character substrings of the hex String, parse each as
+            // a base-16 number and convert it to an Integer, then store that
+            // Integer into the array
+            for(int i = 0; i < ints.length; i++) {
+                ints[i] = Integer.parseInt( s.substring(i,i+7) , 16 );
+            }
+            
+            // Return the array of Integers we produced
+            return ints;
+            
 	}
 	
 	public static byte[] convertFromIntsToBytes(Integer[] ints) {
@@ -63,7 +91,18 @@ public class Tools {
 	}
 	
 	public static String convertFromIntsToHexString(Integer[] ints) {
-		return null;
+            String hexString = "";
+            for (int i = 0; i < ints.length; i++) {
+                hexString += Integer.toHexString(ints[i]);
+            }
+            return hexString;
 	}
 	
+        // main method included only for easy testing of Tools.java helper methods.
+        // This can be deleted once confident that all 4 conversion methods
+        // are working correctly.
+        public static void main(String[] args) {
+            // TODO code application logic here
+        }
+    
 }
