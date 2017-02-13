@@ -2,6 +2,7 @@ package edu.cedarville.cs.crypto;
 
 // FIXME: look at formatting to make sure it looks good
 
+
 public class TinyE {
     
         private static int delta = 0x9e3779b9;

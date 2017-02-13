@@ -2,6 +2,12 @@ package edu.cedarville.cs.crypto;
 
 public class Tools {
 	
+        //Josiah work on bytes to ints and vice versa and test
+        //Ben work on hex string to ints and vice versa and test
+    
+        //Josiah study CTR mode
+        //Ben study CBC mode
+    
 	public static Integer[] convertFromBytesToInts(byte[] bs) {
             //take 4 bytes
                 //if leftover is < 4, add padding
