@@ -8,10 +8,11 @@ public class TinyE {
 	
 	public static enum Mode { ECB, CBC, CTR };
 	
+        
 	public Integer[] encrypt(Integer[] plaintext, Integer[] key, Mode mode, Integer[] iv) {                        
             
             //define variables
-            int left, right, sum;
+            int left, right, sum = 0;
             Integer[] ciphertext = null;
             
             //FIXME: initialize ciphertext to blanks the same size as the plaintext.
