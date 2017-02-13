@@ -3,11 +3,21 @@ package edu.cedarville.cs.crypto;
 public class Tools {
 	
 	public static Integer[] convertFromBytesToInts(byte[] bs) {
-		return null;
+            //take 4 bytes
+                //if leftover is < 4, add padding
+            //append an integer to array
+            
+            return null;
 	}
 	
 	public static Integer[] convertFromHexStringToInts(String s) {
-		return null;
+            //read in 8 hex char
+                //if less than 8 add padding
+            //run through for loop to convert each char to binary
+            //concatenate together
+            //add resulting integer to array
+            
+            return null;
 	}
 	
 	public static byte[] convertFromIntsToBytes(Integer[] ints) {
