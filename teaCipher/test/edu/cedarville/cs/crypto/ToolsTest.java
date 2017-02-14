@@ -43,12 +43,14 @@ public class ToolsTest {
     @Test
     public void testConvertFromBytesToInts() {
         System.out.println("convertFromBytesToInts");
-        byte[] bs = null;
-        Integer[] expResult = null;
+        byte[] bs = {(byte) 0x00, (byte) 0xff, (byte) 0x20, (byte) 0x90, 
+            (byte) 0x40, (byte) 0x40, (byte) 0x40, (byte) 0x40};
+        //byte[] bs = (byte[]) {0, 255, 20, 90, 40, 40, 40, 40};
+        Integer[] expResult = {0x00ff2090, 0x40404040};
         Integer[] result = Tools.convertFromBytesToInts(bs);
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**

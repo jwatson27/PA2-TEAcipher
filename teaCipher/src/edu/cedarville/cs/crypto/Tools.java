@@ -23,32 +23,70 @@ public class Tools {
             // In which case, given the example I wrote above, we would end up
             // with a new padded array of length 16 bytes, or 128 bits.
             //
-            int padNum = bs.length % 8; //number of padding bytes for 64-bit blocks                                               
+            int padNum = (8 - (bs.length % 8)) % 8; //number of padding bytes for 64-bit blocks                                               
             byte[] paddedBS = new byte[bs.length + padNum]; //create new byte array
             
-            //initialize padded bytes
+            //initialize bytes
+            for(int i = 0; i < bs.length; i++) {
+                paddedBS[i] = bs[i];
+            }
+            //NOT NECESSARY: initialize padded bytes
             for(int i = bs.length; i < paddedBS.length; i++) {
                 paddedBS[i] = 0x00;
             }            
             
+            
+            
             //create integer array to hold byte values
             Integer[] intArray = new Integer[paddedBS.length/4];            
             
+            
+            
+            
             //convert bytes to ints
             int convInt;
-            for (int i = 0; i < paddedBS.length; i++) {
+            for (int i = 0; i < intArray.length; i++) {
+                //convert byte to string
+                String[] bts = new String[4];
+                
+                for (int j = 0; j < 4; j++) {
+                    bts[j] = Integer.toHexString(paddedBS[i*4+j]);
+                    
+                    if (bts[j].length() < 2) {
+                        bts[j] = "0".concat(bts[j]);
+                    }
+                    else if (bts[j].length() > 2) {
+                        bts[j] = bts[j].substring(6,8);
+                    }                  
+                }
+                
+                
+                //concatenate strings together
+                String convStr = bts[0] + bts[1] + bts[2] + bts[3];
+                
                 //convert 4 bytes to integer
-                convInt = 0;
+                convInt = Integer.parseInt(convStr, 16);
+                
+                
+                                
+
+                                                                
+                
+                
+                /*
+
                 //form integer using bytes from left to right
                 for (int j = 0; j < 4; j++) {
                     convInt = convInt | (paddedBS[i*4+j] << (3-j)*8);                    
                 }
-                //append an integer to array
+                //append an integer to array */
                 intArray[i] = convInt;
             }     
                                        
             return intArray;
 	}
+        
+        
 	
 	public static Integer[] convertFromHexStringToInts(String s) {
             
