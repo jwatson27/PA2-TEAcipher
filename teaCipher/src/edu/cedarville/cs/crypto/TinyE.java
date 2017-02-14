@@ -41,7 +41,7 @@ public class TinyE {
                 }
                 else {
                     // CTR mode
-                    
+                    // Ci = Pi ^ E(IV + i, K)                    
                 }
             }                       
                         
@@ -80,6 +80,8 @@ public class TinyE {
                 }
                 else {
                     // CTR mode
+                    // Pi = Ci ^ E(IV + i, K)
+                    
                 }
             }
             return plaintext;

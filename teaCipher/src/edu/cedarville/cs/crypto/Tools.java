@@ -68,6 +68,8 @@ public class Tools {
             // "12345678    9ABC"
             // ?? I ask because that would change the resulting Integer, wouldn't it?
             
+            //RESPONSE: I believe the first method is correct. -Josiah
+            
             // Declare our array of Integers to be the proper size
             // (note that every 8 hex characters make one Integer)
             Integer[] ints = new Integer[ s.length() / 8 ];
