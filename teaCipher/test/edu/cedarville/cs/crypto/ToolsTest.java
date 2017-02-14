@@ -57,12 +57,15 @@ public class ToolsTest {
     @Test
     public void testConvertFromHexStringToInts() {
         System.out.println("convertFromHexStringToInts");
-        String s = "";
-        Integer[] expResult = null;
+        String s = "000000FF0000001";
+        Integer[] expResult = {255, 16};
         Integer[] result = Tools.convertFromHexStringToInts(s);
+        System.out.println(result[0]);
+        System.out.println(result[1]);
+        //System.out.println(result[2]);
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -85,12 +88,12 @@ public class ToolsTest {
     @Test
     public void testConvertFromIntsToHexString() {
         System.out.println("convertFromIntsToHexString");
-        Integer[] ints = null;
-        String expResult = "";
+        Integer[] ints = {255, 1, 40807654};
+        String expResult = "000000ff00000001026eace6";
         String result = Tools.convertFromIntsToHexString(ints);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     
 }

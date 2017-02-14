@@ -55,20 +55,10 @@ public class Tools {
             // add padding to ensure that the length of the hex String is a
             // multiple of 8. (because each "chunk" of 8 characters will become
             // an Integer)
-            int padNum = 8 - (s.length() % 8);
+            int padNum = (8 - (s.length() % 8)) % 8;
             for (int i = 0; i < padNum; i++) {
-                s += " ";
+                s += "0";
             }
-            
-            // FIXME: question about padding. Should the hex String
-            // "123456789ABC"
-            // have padding added like this:
-            // "123456789ABC    "
-            // or like this:
-            // "12345678    9ABC"
-            // ?? I ask because that would change the resulting Integer, wouldn't it?
-            
-            //RESPONSE: I believe the first method is correct. -Josiah
             
             // Declare our array of Integers to be the proper size
             // (note that every 8 hex characters make one Integer)
@@ -78,7 +68,7 @@ public class Tools {
             // a base-16 number and convert it to an Integer, then store that
             // Integer into the array
             for(int i = 0; i < ints.length; i++) {
-                ints[i] = Integer.parseInt( s.substring(i,i+7) , 16 );
+                ints[i] = Integer.parseInt( s.substring(8*i,8*i+8) , 16 );
             }
             
             // Return the array of Integers we produced
@@ -102,6 +92,7 @@ public class Tools {
             return byteArray;
 	}
 	
+        // NOTE: this returns the hex String containing lowercase characters
 	public static String convertFromIntsToHexString(Integer[] ints) {
             // The String we will build from Integers and eventually return at
             // the end of the method.
