@@ -82,18 +82,17 @@ public class TinyE {
             //define variables
             int left, right, sum;
             Integer[] plaintext = null;
-            for (int j = 0; j < ciphertext.length; j++) {
-                        
-                // FIXME: get first block (64 bits)
-                left = ciphertext[j];
-                right = ciphertext[j+1];                                                                
-                
-                // FIXME: for now, assuming that ciphertext is exatcly 64 bits (1 block, two 32-bit halves)
-                //int left = ciphertext[0];
-                //int right = ciphertext[1];
-                if (mode == Mode.ECB) {
-                    // Electronic Codebook mode
-                    // 
+
+            // FIXME: for now, assuming that ciphertext is exatcly 64 bits (1 block, two 32-bit halves)
+            //int left = ciphertext[0];
+            //int right = ciphertext[1];
+            if (mode == Mode.ECB) {
+                // Electronic Codebook mode
+
+                for (int j = 0; j < ciphertext.length; j++) {                    
+                    // Get first block (64 bits)    
+                    left = ciphertext[j];
+                    right = ciphertext[j+1];
                     sum = delta << 5;
                     for ( int i = 0; i < 32; i++ ) {
                         right = right - ((( left << 4) + key[2]) ^ ( left + sum) ^ (( left >> 5) + key[3]));
@@ -103,9 +102,10 @@ public class TinyE {
                     plaintext[j] = left;
                     plaintext[j + 1] = right;
                 }
-                else if (mode == Mode.CBC) {
-                    // Cipher Block Chaining mode
-                    
+            }
+            else if (mode == Mode.CBC) {
+                // Cipher Block Chaining mode
+
 //                    left  = iv[0] ^ plaintext[0];
 //                    right = iv[1] ^ plaintext[1];
 //                    sum = sum + delta;
@@ -124,18 +124,18 @@ public class TinyE {
 //                        ciphertext[j+1] = right;
 //                    }
 
-                    
-                    left  = ciphertext[0];
-                    right = ciphertext[1];
-                    
-                }
-                else {
-                    // CTR mode
-                    // Pi = Ci ^ E(IV + i, K)
-                    
-                }
+
+                left  = ciphertext[0];
+                right = ciphertext[1];
+
             }
+            else {
+                // CTR mode
+                // Pi = Ci ^ E(IV + i, K)
+
+            }
+        
             return plaintext;
-	}
+        }
 	
 }
