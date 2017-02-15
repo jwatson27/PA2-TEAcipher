@@ -121,7 +121,7 @@ public class Tools {
             
             //unravel integers
             for (int i = 0; i < ints.length; i++) {                
-                for (int j = 0; j < 3; j++) {
+                for (int j = 0; j < 4; j++) {
                     tempInt = ints[i] >> (3-j)*8;
                     byteArray[i*4+j] = tempInt.byteValue();
                 }
