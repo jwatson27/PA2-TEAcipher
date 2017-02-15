@@ -106,6 +106,28 @@ public class TinyE {
                 else if (mode == Mode.CBC) {
                     // Cipher Block Chaining mode
                     
+//                    left  = iv[0] ^ plaintext[0];
+//                    right = iv[1] ^ plaintext[1];
+//                    sum = sum + delta;
+//                    left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
+//                    right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
+//                    ciphertext[0] = left;
+//                    ciphertext[1] = right;
+//
+//                    for (int j = 2; j < plaintext.length; j += 2) {
+//                        left  = ciphertext[j-2] ^ plaintext[j];
+//                        right = ciphertext[j-1] ^ plaintext[j+1];
+//                        sum = sum + delta;
+//                        left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
+//                        right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
+//                        ciphertext[j] = left;
+//                        ciphertext[j+1] = right;
+//                    }
+
+                    
+                    left  = ciphertext[0];
+                    right = ciphertext[1];
+                    
                 }
                 else {
                     // CTR mode
