@@ -87,7 +87,7 @@ public class TinyE {
 	public Integer[] decrypt(Integer[] ciphertext, Integer[] key, Mode mode, Integer[] iv) {
             
             //define variables
-            int left, right, sum;
+            //int left, right, sum;
             Integer[] plaintext = new Integer[ciphertext.length];
 
             // FIXME: for now, assuming that ciphertext is exatcly 64 bits (1 block, two 32-bit halves)
@@ -95,7 +95,7 @@ public class TinyE {
             //int right = ciphertext[1];
             if (mode == Mode.ECB) {
                 // Electronic Codebook mode
-
+                int left, right, sum;
                 System.out.println("executing decrypt ecb in tinye.java");
                 
                 for (int j = 0; j < ciphertext.length; j += 2) {                    
@@ -114,8 +114,8 @@ public class TinyE {
             }
             else if (mode == Mode.CBC) {
                 // Cipher Block Chaining mode
-
-                sum = delta << 5;
+                int left, right, sum;
+                sum = delta << 5;               
                 
                 left  = ciphertext[0];
                 right = ciphertext[1];
@@ -125,9 +125,10 @@ public class TinyE {
                     sum = sum - delta;
                 }
                 plaintext[0] =  left ^ iv[0];
-                plaintext[1] = right ^ iv[1];
+                plaintext[1] = right ^ iv[1];                                                
                 
                 for (int j = 2; j < ciphertext.length; j += 2) {
+                    sum = delta << 5;
                     left  = ciphertext[j];
                     right = ciphertext[j+1];
                     for ( int i = 0; i < 32; i++ ) {
@@ -135,7 +136,7 @@ public class TinyE {
                         left  =  left - (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
                         sum = sum - delta;
                     }
-                    plaintext[j] = left ^ ciphertext[j-2];
+                    plaintext[j]   = left  ^ ciphertext[j-2];
                     plaintext[j+1] = right ^ ciphertext[j-1];
                 }
 
@@ -143,6 +144,7 @@ public class TinyE {
             else {
                 // CTR mode
                 // Pi = Ci ^ E(IV + i, K)
+                int left, right, sum;
                 sum = 0;
                 
                 long iv64 = (iv[0] << 32) | (iv[1]);
