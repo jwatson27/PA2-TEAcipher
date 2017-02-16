@@ -8,7 +8,6 @@ public class TinyE {
         private static int delta = 0x9e3779b9;
 	
 	public static enum Mode { ECB, CBC, CTR };
-	
         
 	public Integer[] encrypt(Integer[] plaintext, Integer[] key, Mode mode, Integer[] iv) {                        
             
@@ -112,27 +111,29 @@ public class TinyE {
             else if (mode == Mode.CBC) {
                 // Cipher Block Chaining mode
 
-//                    left  = iv[0] ^ plaintext[0];
-//                    right = iv[1] ^ plaintext[1];
-//                    sum = sum + delta;
-//                    left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
-//                    right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
-//                    ciphertext[0] = left;
-//                    ciphertext[1] = right;
-//
-//                    for (int j = 2; j < plaintext.length; j += 2) {
-//                        left  = ciphertext[j-2] ^ plaintext[j];
-//                        right = ciphertext[j-1] ^ plaintext[j+1];
-//                        sum = sum + delta;
-//                        left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
-//                        right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
-//                        ciphertext[j] = left;
-//                        ciphertext[j+1] = right;
-//                    }
-
-
+                sum = delta << 5;
+                
                 left  = ciphertext[0];
                 right = ciphertext[1];
+                for ( int i = 0; i < 32; i++ ) {
+                    right = right - ((( left << 4) + key[2]) ^ ( left + sum) ^ (( left >> 5) + key[3]));
+                    left  =  left - (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
+                    sum = sum - delta;
+                }
+                plaintext[0] =  left ^ iv[0];
+                plaintext[1] = right ^ iv[1];
+                
+                for (int j = 2; j < ciphertext.length; j += 2) {
+                    left  = ciphertext[j];
+                    right = ciphertext[j+1];
+                    for ( int i = 0; i < 32; i++ ) {
+                        right = right - ((( left << 4) + key[2]) ^ ( left + sum) ^ (( left >> 5) + key[3]));
+                        left  =  left - (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
+                        sum = sum - delta;
+                    }
+                    plaintext[j] = left ^ ciphertext[j-2];
+                    plaintext[j+1] = right ^ ciphertext[j-1];
+                }
 
             }
             else {
