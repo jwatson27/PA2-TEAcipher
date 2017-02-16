@@ -5,7 +5,8 @@ public class Tools {
     public static Integer[] convertFromBytesToInts(byte[] bs) { 
 
         //number of padding bytes for 64-bit blocks
-        int padNum = (8 - (bs.length % 8)) % 8;               
+        int padNum = (8 - (bs.length % 8)) % 8;   
+        
         //create new byte array
         byte[] paddedBS = new byte[bs.length + padNum]; 
 
@@ -13,6 +14,7 @@ public class Tools {
         for(int i = 0; i < bs.length; i++) {
             paddedBS[i] = bs[i];
         }
+        
         //initialize padded bytes
         for(int i = bs.length; i < paddedBS.length; i++) {
             paddedBS[i] = 0x20;
@@ -23,11 +25,14 @@ public class Tools {
 
         //convert bytes to ints
         int convInt;
+        
         for (int i = 0; i < intArray.length; i++) {
+            
             //convert byte to string
             String[] bts = new String[4];
 
             for (int j = 0; j < 4; j++) {
+                
                 bts[j] = Integer.toHexString(paddedBS[i*4+j]);
 
                 if (bts[j].length() < 2) {
@@ -90,7 +95,6 @@ public class Tools {
     }
 
     public static byte[] convertFromIntsToBytes(Integer[] ints) {
-        System.out.println("converting ints to bytes tools.java");
 
         //create byte array
         byte[] byteArray = new byte[ints.length*4]; 
@@ -109,9 +113,11 @@ public class Tools {
     }
 
     public static String convertFromIntsToHexString(Integer[] ints) {
+        
         // The String we will build from Integers and eventually return at
         // the end of the method.
         String hexString = "";
+        
         // Each Integer gets converted into a String and first stored here.
         String tempStr;
 
