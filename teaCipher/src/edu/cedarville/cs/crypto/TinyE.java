@@ -1,7 +1,5 @@
 package edu.cedarville.cs.crypto;
 
-// FIXME: look at formatting to make sure it looks good
-
 
 public class TinyE {
     
