@@ -14,15 +14,14 @@ public class TinyE {
                                     Mode mode, Integer[] iv) {                        
 
             //define variables
-            int left, right, sum = 0;
+            int left, right, sum;
             Integer[] ciphertext = new Integer[plaintext.length];                        
             
             if (mode == Mode.ECB) {
-                // Electronic Codebook mode
-
-                System.out.println("executing encrypt ecb in tinye.java");
+                // Electronic Codebook mode                
                 
                 for (int j = 0; j < plaintext.length; j += 2) {                      
+                    sum = 0;                    
                     left = plaintext[j];
                     right = plaintext[j+1];  
 
@@ -45,26 +44,11 @@ public class TinyE {
                 // Cipher Block Chaining mode
 
                 //run encryption with Initialization Vector
+                sum = 0;
                 left  = iv[0] ^ plaintext[0];
                 right = iv[1] ^ plaintext[1];
                 
-                sum = sum + delta;
-                left  = left  + (((right << 4) + key[0]) 
-                        ^ (right + sum) 
-                        ^ ((right >> 5) + key[1]));
-                right = right + (((left  << 4) + key[2]) 
-                        ^ (left  + sum) 
-                        ^ ((left  >> 5) + key[3]));
-                
-                ciphertext[0] = left;
-                ciphertext[1] = right;
-                
-                
-                //run encryption for subsequent blocks
-                for (int j = 2; j < plaintext.length; j += 2) {
-                    left  = ciphertext[j-2] ^ plaintext[j];
-                    right = ciphertext[j-1] ^ plaintext[j+1];
-                    
+                for ( int i = 0; i < 32; i++ ) {
                     sum = sum + delta;
                     left  = left  + (((right << 4) + key[0]) 
                             ^ (right + sum) 
@@ -72,6 +56,27 @@ public class TinyE {
                     right = right + (((left  << 4) + key[2]) 
                             ^ (left  + sum) 
                             ^ ((left  >> 5) + key[3]));
+                }
+                
+                ciphertext[0] = left;
+                ciphertext[1] = right;
+                
+                
+                //run encryption for subsequent blocks
+                for (int j = 2; j < plaintext.length; j += 2) {
+                    sum = 0;
+                    left  = ciphertext[j-2] ^ plaintext[j];
+                    right = ciphertext[j-1] ^ plaintext[j+1];
+                    
+                    for ( int i = 0; i < 32; i++ ) {
+                        sum = sum + delta;
+                        left  = left  + (((right << 4) + key[0]) 
+                                ^ (right + sum) 
+                                ^ ((right >> 5) + key[1]));
+                        right = right + (((left  << 4) + key[2]) 
+                                ^ (left  + sum) 
+                                ^ ((left  >> 5) + key[3]));
+                    }
                     
                     ciphertext[j] = left;
                     ciphertext[j+1] = right;
@@ -121,13 +126,11 @@ public class TinyE {
             Integer[] plaintext = new Integer[ciphertext.length];
 
             if (mode == Mode.ECB) {
-                // Electronic Codebook mode
-                
-                System.out.println("executing decrypt ecb in tinye.java");
+                // Electronic Codebook mode                               
                 
                 for (int j = 0; j < ciphertext.length; j += 2) {                                            
                     sum = delta << 5;
-                    left = ciphertext[j];
+                    left  = ciphertext[j];
                     right = ciphertext[j+1];
                     
                     //run decryption
@@ -141,8 +144,8 @@ public class TinyE {
                         sum = sum - delta;
                     }
                     
-                    plaintext[j] = left;
-                    plaintext[j + 1] = right;
+                    plaintext[j]   = left;
+                    plaintext[j+1] = right;
                 }
             }
             else if (mode == Mode.CBC) {
