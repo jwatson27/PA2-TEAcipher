@@ -72,9 +72,11 @@ public class TinyE {
                     left = (int) iv64 >> 32;
                     right = (int) iv64;                                        
                     
-                    sum = sum + delta;
-                    left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
-                    right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
+                    for ( int k = 0; k < 32; k++ ) {
+                        sum = sum + delta;
+                        left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
+                        right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
+                    }
                     
                     ciphertext[j]   = plaintext[j]   ^ left;
                     ciphertext[j+1] = plaintext[j+1] ^ right;
@@ -87,7 +89,7 @@ public class TinyE {
 	public Integer[] decrypt(Integer[] ciphertext, Integer[] key, Mode mode, Integer[] iv) {
             
             //define variables
-            //int left, right, sum;
+            int left, right, sum;
             Integer[] plaintext = new Integer[ciphertext.length];
 
             // FIXME: for now, assuming that ciphertext is exatcly 64 bits (1 block, two 32-bit halves)
@@ -95,7 +97,7 @@ public class TinyE {
             //int right = ciphertext[1];
             if (mode == Mode.ECB) {
                 // Electronic Codebook mode
-                int left, right, sum;
+                
                 System.out.println("executing decrypt ecb in tinye.java");
                 
                 for (int j = 0; j < ciphertext.length; j += 2) {                    
@@ -114,7 +116,7 @@ public class TinyE {
             }
             else if (mode == Mode.CBC) {
                 // Cipher Block Chaining mode
-                int left, right, sum;
+                
                 sum = delta << 5;               
                 
                 left  = ciphertext[0];
@@ -144,24 +146,86 @@ public class TinyE {
             else {
                 // CTR mode
                 // Pi = Ci ^ E(IV + i, K)
-                int left, right, sum;
+                
                 sum = 0;
                 
-                long iv64 = (iv[0] << 32) | (iv[1]);
+                //long iv64 = (long) ((( (long) iv[0] << 32) & 0xffffffff00000000) |  (iv[1]));
+                long ivMSB = (long) iv[0];
+                long ivLSB = (long) iv[1];
+                long iv64Orig = (( ivMSB << 32 ) & 0xffffffff) | ivLSB;
+//                    System.out.println("iv[0]: "+iv[0]);
+//                    System.out.println("iv[0] << 32: "+(iv[0]<<32));
+//                    System.out.println("iv[1]: "+iv[1]);
+//                    
+//                    left = (int) (iv64 >> 32);
+//                    right = (int) (iv64 & 0x0000ffff);   
+//                    
+//                    System.out.println("iv64: "+iv64);
+//                    System.out.println("left: "+left);
+//                    System.out.println("right: "+right);
+//                    
+//                    for ( int k = 0; k < 32; k++ ) {
+//                        sum = sum + delta;
+//                        left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
+//                        right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
+//                    }
+//                    
+//                    plaintext[0]   = ciphertext[0]   ^ left;
+//                    plaintext[1] = ciphertext[1] ^ right;
                 
-                for (int j = 0; j < ciphertext.length; j += 2) {
-                    int i = j/2;
-                    iv64 += i;
+//                    left = 0xffffffff;
+//                    right = 0xfffffff0; 
+//
+//                    for ( int k = 0; k < 32; k++ ) {
+//                        sum = sum + delta;
+//                        left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
+//                        right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
+//                    }
+//
+//                    plaintext[0] = ciphertext[0] ^ left;
+//                    plaintext[1] = ciphertext[1] ^ right;
+//
+//                
+//                    left = 0xffffffff;
+//                    right = 0xfffffff1; 
+//
+//                    sum = 0;
+//                    
+//                    for ( int k = 0; k < 32; k++ ) {
+//                        sum = sum + delta;
+//                        left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
+//                        right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
+//                    }
+//
+//                    plaintext[2] = ciphertext[2] ^ left;
+//                    plaintext[3] = ciphertext[3] ^ right;
+                
+                
+                for (int j = 0; j < ciphertext.length; j += 2) {                    
+                    sum = 0;
+                    int i = j/2;                    
+                    long iv64 = iv64Orig + i;
+                                        
+                    left = (int) (iv64 >> 32);
+                    right = (int) (iv64 & 0x00000000ffffffff);                       
+
+                    if (i < 40) {                                                
+                        System.out.println("i: "+i);
+                        System.out.println("iv64: "+(iv64));
+                        //System.out.println("iv64 >> 32: "+(iv64>>32));
+                        //System.out.println("iv64 & 0x00000000ffffffff: "+(iv64 & 0x00000000ffffffff));                        
+                        System.out.println("left: "+left);
+                        System.out.println("right: "+right);
+                    }
                     
-                    left = (int) iv64 >> 32;
-                    right = (int) iv64;                                        
-                    
-                    sum = sum + delta;
-                    left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
-                    right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
+                    for ( int k = 0; k < 32; k++ ) {
+                        sum = sum + delta;
+                        left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
+                        right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
+                    }
                     
                     plaintext[j]   = ciphertext[j]   ^ left;
-                    plaintext[j+1] = ciphertext[j+1] ^ right;
+                    plaintext[j+1] = ciphertext[j+1] ^ right;                                       
                 }
             }
         
