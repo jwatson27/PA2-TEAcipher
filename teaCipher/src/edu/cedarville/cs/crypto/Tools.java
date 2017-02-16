@@ -23,6 +23,10 @@ public class Tools {
             // In which case, given the example I wrote above, we would end up
             // with a new padded array of length 16 bytes, or 128 bits.
             //
+            
+            System.out.println("converting bytes to ints tools.java");
+            
+            
             int padNum = (8 - (bs.length % 8)) % 8; //number of padding bytes for 64-bit blocks                                               
             byte[] paddedBS = new byte[bs.length + padNum]; //create new byte array
             
@@ -65,7 +69,13 @@ public class Tools {
                 String convStr = bts[0] + bts[1] + bts[2] + bts[3];
                 
                 //convert 4 bytes to integer
-                convInt = Integer.parseInt(convStr, 16);
+                int i1, i2;
+                String sub1 = bts[0] + bts[1]; 
+                String sub2 = bts[2] + bts[3];
+                i1 = Integer.parseInt(sub1, 16);
+                i2 = Integer.parseInt(sub2, 16);
+                convInt = (i1 << 16) | i2;
+                //convInt = Integer.parseInt(convStr, 16);
                 
                 
                                 
@@ -105,8 +115,18 @@ public class Tools {
             // Take 8-character substrings of the hex String, parse each as
             // a base-16 number and convert it to an Integer, then store that
             // Integer into the array
+            int i1, i2;
+            
             for(int i = 0; i < ints.length; i++) {
-                ints[i] = Integer.parseInt( s.substring(8*i,8*i+8) , 16 );
+                //String sub = s.substring(8*i, 8*i+8);
+                
+                String sub1 = s.substring(4*i, 4*i+4);
+                String sub2 = s.substring(4*i+4, 4*i+8);
+                System.out.println("for i = "+i+". "+"substring: "+sub1+sub2);
+                i1 = Integer.parseInt(sub1, 16);
+                i2 = Integer.parseInt(sub2, 16);
+                ints[i] = (i1 << 16) | i2;
+                //ints[i] = Integer.parseInt( s.substring(8*i, 8*i+8) , 16 );
             }
             
             // Return the array of Integers we produced
@@ -115,6 +135,8 @@ public class Tools {
 	}
 	
 	public static byte[] convertFromIntsToBytes(Integer[] ints) {
+            System.out.println("converting ints to bytes tools.java");
+            
             byte[] byteArray = new byte[ints.length*4]; //create byte array
             
             Integer tempInt;            

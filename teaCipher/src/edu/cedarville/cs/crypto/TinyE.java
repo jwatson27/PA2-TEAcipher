@@ -13,14 +13,16 @@ public class TinyE {
             
             //define variables
             int left, right, sum = 0;
-            Integer[] ciphertext = null;
+            Integer[] ciphertext = new Integer[plaintext.length];
             
             //FIXME: initialize ciphertext to blanks the same size as the plaintext.
             
             if (mode == Mode.ECB) {
                 // Electronic Codebook mode
 
-                for (int j = 0; j < plaintext.length; j++) {  
+                System.out.println("executing encrypt ecb in tinye.java");
+                
+                for (int j = 0; j < plaintext.length; j += 2) {  
                     // FIXME: get first block (64 bits)
                     left = plaintext[j];
                     right = plaintext[j+1];  
@@ -86,7 +88,7 @@ public class TinyE {
             
             //define variables
             int left, right, sum;
-            Integer[] plaintext = null;
+            Integer[] plaintext = new Integer[ciphertext.length];
 
             // FIXME: for now, assuming that ciphertext is exatcly 64 bits (1 block, two 32-bit halves)
             //int left = ciphertext[0];
@@ -94,7 +96,9 @@ public class TinyE {
             if (mode == Mode.ECB) {
                 // Electronic Codebook mode
 
-                for (int j = 0; j < ciphertext.length; j++) {                    
+                System.out.println("executing decrypt ecb in tinye.java");
+                
+                for (int j = 0; j < ciphertext.length; j += 2) {                    
                     // Get first block (64 bits)    
                     left = ciphertext[j];
                     right = ciphertext[j+1];
