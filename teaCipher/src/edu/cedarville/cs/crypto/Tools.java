@@ -69,7 +69,7 @@ public class Tools {
                 String convStr = bts[0] + bts[1] + bts[2] + bts[3];
                 
                 //convert 4 bytes to integer
-                int i1, i2;
+                int i1, i2;                
                 String sub1 = bts[0] + bts[1]; 
                 String sub2 = bts[2] + bts[3];
                 i1 = Integer.parseInt(sub1, 16);
@@ -119,9 +119,9 @@ public class Tools {
             
             for(int i = 0; i < ints.length; i++) {
                 //String sub = s.substring(8*i, 8*i+8);
-                
-                String sub1 = s.substring(4*i, 4*i+4);
-                String sub2 = s.substring(4*i+4, 4*i+8);
+                String sub = s.substring(8*i, 8*i+8);
+                String sub1 = sub.substring(0, 4);
+                String sub2 = sub.substring(4, 8);
                 System.out.println("for i = "+i+". "+"substring: "+sub1+sub2);
                 i1 = Integer.parseInt(sub1, 16);
                 i2 = Integer.parseInt(sub2, 16);
