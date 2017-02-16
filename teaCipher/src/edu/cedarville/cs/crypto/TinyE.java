@@ -138,7 +138,24 @@ public class TinyE {
             else {
                 // CTR mode
                 // Pi = Ci ^ E(IV + i, K)
-
+                sum = 0;
+                
+                long iv64 = (iv[0] << 32) | (iv[1]);
+                
+                for (int j = 0; j < ciphertext.length; j += 2) {
+                    int i = j/2;
+                    iv64 += i;
+                    
+                    left = (int) iv64 >> 32;
+                    right = (int) iv64;                                        
+                    
+                    sum = sum + delta;
+                    left  = left  + (((right << 4) + key[0]) ^ (right + sum) ^ ((right >> 5) + key[1]));
+                    right = right + (((left  << 4) + key[2]) ^ (left  + sum) ^ ((left  >> 5) + key[3]));
+                    
+                    plaintext[j]   = ciphertext[j]   ^ left;
+                    plaintext[j+1] = ciphertext[j+1] ^ right;
+                }
             }
         
             return plaintext;
