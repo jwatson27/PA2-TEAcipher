@@ -36,7 +36,7 @@ public class Tools {
             }
             //NOT NECESSARY: initialize padded bytes
             for(int i = bs.length; i < paddedBS.length; i++) {
-                paddedBS[i] = 0x00;
+                paddedBS[i] = 0x20;
             }            
             
             
